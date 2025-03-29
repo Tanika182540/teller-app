@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "../shared/components/Input.component";
 
+
 export default function NotFound() {
   const [email, setEmail] = useState<string>("");
   return (
