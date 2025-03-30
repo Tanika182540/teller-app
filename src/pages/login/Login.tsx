@@ -3,23 +3,23 @@ import { auth } from "../../firebase/firebase.config";
 import GoogleLogo from "../../assets/google-logo.png";
 import { useAuth } from "../../routes/AuthContext";
 import View from "../../shared/components/View";
-import { successToast } from "../../shared/components/Toast";
+import { successToast, errorToast } from "../../shared/components/Toast";
 
 const Login = () => {
   const provider = new GoogleAuthProvider();
-  const { login } = useAuth();
+  const login = useAuth()?.login;
 
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       localStorage.setItem("user", JSON.stringify(user));
-      login(user);
+      login?.(user);
       successToast("Login Success");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      // TODO: Modal
       console.error("Error signing in with Google:", error.message);
+      errorToast("Error signing in with Google: " + error.message);
     }
   };
 

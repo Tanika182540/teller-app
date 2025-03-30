@@ -1,11 +1,11 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { onAuthStateChanged, User } from "firebase/auth"; // Firebase Auth function
 import { auth } from "../../firebase/firebase.config";
 import { useAuth } from "../../routes/AuthContext";
 
 const AuthStatus = () => {
   const [user, setUser] = useState<User | null>(null);
-  const { logout } = useAuth();
+  const logout = useAuth()?.logout;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -33,7 +33,7 @@ const AuthStatus = () => {
           onClick={() => {
             auth.signOut();
             localStorage.removeItem("user");
-            logout();
+            logout?.();
           }}
         >
           Sign Out

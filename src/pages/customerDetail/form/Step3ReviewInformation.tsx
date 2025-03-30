@@ -40,7 +40,7 @@ export default function Step3ReviewInformation() {
   const onClickSubmit = async () => {
     const data: CustomerData = {
       detail: customerDetailsForm.watch(),
-      file: customerVerifyDocumentsForm.watch("document.file"),
+      file: customerVerifyDocumentsForm.watch("document"),
       documentType: customerVerifyDocumentsForm.watch("documentType"),
       submittedAt: ''
     };
@@ -72,9 +72,9 @@ export default function Step3ReviewInformation() {
         </div>
         {document && (
           <PdfFile
-            key={document.file.name}
-            fileName={document.file.name}
-            onClick={() => handleFilePreview(document.file)}
+            key={document.name}
+            fileName={document.name}
+            onClick={() => handleFilePreview(document)}
           />
         )}
       </div>

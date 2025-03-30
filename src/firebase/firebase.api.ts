@@ -23,7 +23,6 @@ export const createCustomer = async (
   form: CustomerData,
   callback: () => void
 ) => {
-  console.log("from", form.file);
   const { detail, file, documentType } = form;
   const { accountNumber, firstName, idCardNumber, lastName } = detail;
   const document = await toBase64(file);
@@ -106,7 +105,6 @@ export const onCustomerChange = (
   onChange: (unknown: CustomerData) => unknown
 ) => {
   const customerRef = ref(database, "customers/" + idCardNumber); // Use email as the unique identifier or generate a unique key
-  console.log("ref");
   onValue(customerRef, (snapshot) => {
     onChange(toCustomerData(snapshot.val()));
   });

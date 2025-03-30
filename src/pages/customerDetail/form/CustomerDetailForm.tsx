@@ -8,14 +8,9 @@ export interface ICustomerDetail {
   accountNumber: number;
 }
 
-export interface Document {
-  file: File;
-  isUpload?: boolean;
-}
-
 export interface ICustomerVerifyDocuments {
   documentType: string;
-  document?: Document;
+  document: File;
 }
 
 export const CustomerDetailSchema = yup.object({
@@ -44,11 +39,11 @@ export const CustomerDetailSchema = yup.object({
 });
 
 const fileSchema = yup
-  .mixed<Document>()
+  .mixed<File>()
   .test(
     "documentSize",
     "Each file must be less than 5MB",
-    (document) => document && document.file.size <= 5 * 1024 * 1024
+    (document) => document && document.size <= 5 * 1024 * 1024
   )
   .required();
 

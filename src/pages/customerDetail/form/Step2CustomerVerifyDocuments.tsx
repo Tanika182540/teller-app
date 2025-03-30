@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import {
   CustomerDetailFormContext,
   ICustomerDetailContext,
@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import PdfFile from "../../../shared/components/PdfFile";
 import DocumentSelector from "../../../shared/components/DocumentSelector";
-// import { uploadPdfFile } from "../../../firebase/firebase.api";
 
 export default function Step2CustomerVerifyDocuments() {
   const { customerVerifyDocumentsForm, setStep } =
@@ -18,6 +17,7 @@ export default function Step2CustomerVerifyDocuments() {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors, isValid },
   } = customerVerifyDocumentsForm;
   const document = watch("document");
@@ -27,8 +27,13 @@ export default function Step2CustomerVerifyDocuments() {
     setStep(FormStep.STEP3_DOCUMENT_REVIEW);
   };
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const onDeleteFile = () => {
-    setValue("document", undefined, { shouldValidate: true });
+    if (fileInputRef && fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+
+    reset();
   };
 
   const handleFilePreview = (file?: File) => {
@@ -40,26 +45,6 @@ export default function Step2CustomerVerifyDocuments() {
   const onClickBack = () => {
     setStep(FormStep.STEP1_CUSTOMER_DETAIL);
   };
-
-  // const handleFileUpload = async (document?: Document) => {
-  //   if (!document || !shouldUploadFile) return;
-  //   try {
-  //     await uploadPdfFile(document.file);
-
-  //     const updatedDocument = {
-  //       ...document,
-  //       isUpload: true,
-  //     };
-
-  //     setValue("document", updatedDocument, { shouldValidate: true });
-  //   } catch (error) {
-  //     errorToast("File upload failed:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   handleFileUpload(document);
-  // }, [document]);
 
   return (
     <form
@@ -73,7 +58,6 @@ export default function Step2CustomerVerifyDocuments() {
             setValue("documentType", option, { shouldValidate: true });
           }}
         />
-        {/* <label className="text-gray-700">Upload PDF Files (Max: 5)</label> */}
         <label
           htmlFor="documentUpload"
           className="group flex w-fit gap-2 items-center cursor-pointer px-4 py-2 rounded-md border-2 border-blue-500 text-blue-500 
@@ -93,24 +77,25 @@ export default function Step2CustomerVerifyDocuments() {
           multiple
           id="documentUpload"
           hidden
+          ref={fileInputRef}
           onChange={(e) => {
             const newFiles = e.target.files?.[0];
             if (!newFiles) return;
-            setValue("document.file", newFiles, { shouldValidate: true });
+            setValue("document", newFiles, { shouldValidate: true });
           }}
         />
         <div className="flex flex-col gap-4 grow">
           {document && (
             <PdfFile
-              key={document.file.name}
-              fileName={document.file?.name ?? ""}
-              onClick={() => handleFilePreview(document.file)}
+              key={document.name}
+              fileName={document?.name ?? ""}
+              onClick={() => handleFilePreview(document)}
               onDeleteFile={() => onDeleteFile()}
             />
           )}
         </div>
         {errors.document && (
-          <p className="text-red-500 text-xs">{errors.document.message}</p>
+          <div className="text-red-500 text-xs">{errors.document.message}</div>
         )}
         <div className="grid grid-cols-2 h-full items-end gap-2">
           <Button title="Back" onClick={onClickBack} type="outline" />

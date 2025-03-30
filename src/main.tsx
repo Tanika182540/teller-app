@@ -11,7 +11,7 @@ import Layout from "./shared/components/Layout";
 import CustomerDataList from "./pages/customerList/CustomerDataList";
 
 const App = () => {
-  const { user } = useAuth();
+  const user = useAuth()?.user;
   const isAuthenticated = !!user;
 
   return (
@@ -30,13 +30,7 @@ const App = () => {
       {/* Public Routes */}
       <Route
         path="/login"
-        element={
-          isAuthenticated ? (
-            <Navigate to="/" replace />
-          ) : (
-            <Login />
-          )
-        }
+        element={isAuthenticated ? <Navigate to="/" replace /> : <Login />}
       />
     </Routes>
   );
