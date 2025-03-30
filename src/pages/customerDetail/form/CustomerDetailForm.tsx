@@ -8,8 +8,14 @@ export interface ICustomerDetail {
   accountNumber: number;
 }
 
+export interface Document {
+  file: File;
+  isUpload?: boolean;
+}
+
 export interface ICustomerVerifyDocuments {
-  documents?: File[];
+  documentType: string;
+  document?: Document;
 }
 
 export const CustomerDetailSchema = yup.object({
@@ -38,23 +44,15 @@ export const CustomerDetailSchema = yup.object({
 });
 
 const fileSchema = yup
-  .mixed<File[]>()
+  .mixed<Document>()
   .test(
-    "fileType",
-    "Only PDF files are allowed",
-    (files) => files && files.every((file) => file.type === "application/pdf")
-  )
-  .test(
-    "fileSize",
+    "documentSize",
     "Each file must be less than 5MB",
-    (files) => files && files.every((file) => file.size <= 5 * 1024 * 1024)
+    (document) => document && document.file.size <= 5 * 1024 * 1024
   )
-  .test(
-    "fileCount",
-    "You can upload up to 5 files",
-    (files) => files && files.length >= 1 && files.length <= 5
-  );
+  .required();
 
 export const CustomerVerifyDocumentsSchema = yup.object({
-  documents: fileSchema,
+  documentType: yup.string().required(),
+  document: fileSchema,
 });

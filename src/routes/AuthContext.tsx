@@ -6,33 +6,34 @@ import {
   ReactNode,
 } from "react";
 import { errorToast } from "../shared/components/Toast";
+import { User } from "firebase/auth";
 
 interface AuthContextType {
-  user: string | null;
-  login: (userData: string) => void;
+  user?: User;
+  login: (userData: User) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(storedUser);
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  const login = (userData: string) => {
-    localStorage.setItem("user", userData);
+  const login = (userData: User) => {
+    localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem("user");
-    setUser(null);
+    setUser(undefined);
   };
 
   return (

@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import View from "../../../shared/components/View";
 import {
   CustomerDetailFormContext,
   ICustomerDetailContext,
@@ -7,6 +6,9 @@ import {
 import PdfFile from "../../../shared/components/PdfFile";
 import Button from "../../../shared/components/Button";
 import { FormStep } from "../constants/formConstant";
+import { useAuth } from "../../../routes/AuthContext";
+import { onSubmitData } from "../../../firebase/firebase.api";
+import { DocumentOptions } from "../../../shared/components/DocumentSelector";
 
 export default function Step3ReviewInformation() {
   const { customerDetailsForm, customerVerifyDocumentsForm, setStep } =
@@ -14,7 +16,12 @@ export default function Step3ReviewInformation() {
   const { firstName, lastName, idCardNumber, accountNumber } =
     customerDetailsForm.watch();
 
-  const { documents } = customerVerifyDocumentsForm.watch();
+  const { document: document, documentType } = customerVerifyDocumentsForm.watch();
+  const isIdCardDocument = DocumentOptions[0].value === documentType;
+  const docType = isIdCardDocument
+    ? DocumentOptions[0].label
+    : DocumentOptions[1].label;
+  const { user } = useAuth();
 
   const handleFilePreview = (file: File) => {
     const fileURL = URL.createObjectURL(file);
@@ -26,7 +33,7 @@ export default function Step3ReviewInformation() {
   };
 
   const onClickSubmit = () => {
-    // TODO
+    onSubmitData(user.providerData[0].uid, customerDetailsForm.watch());
   };
 
   return (
@@ -48,16 +55,16 @@ export default function Step3ReviewInformation() {
         <div className="text-gray-600">{accountNumber}</div>
       </div>
       <div className="flex flex-col justify-between gap-2">
-        <div className="font-semibold text-gray-700">Documents:</div>
-        <ul className="text-gray-600 flex flex-col gap-2">
-          {documents?.map((file) => (
-            <PdfFile
-              key={file.name}
-              fileName={file.name}
-              onClick={() => handleFilePreview(file)}
-            />
-          ))}
-        </ul>
+        <div className="font-semibold text-gray-700">
+          Documents ({docType}):
+        </div>
+        {document && (
+          <PdfFile
+            key={document.file.name}
+            fileName={document.file.name}
+            onClick={() => handleFilePreview(document.file)}
+          />
+        )}
       </div>
       <div className="grid grid-cols-2 h-full items-end gap-2">
         <Button title="Back" onClick={onClickBack} type="outline" />

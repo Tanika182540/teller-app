@@ -77,7 +77,7 @@ export default function Step1CustomerDetail() {
           />
         )}
       />
-      <div className="flex grow"/>
+      <div className="flex grow" />
       <Button title="Next" type="primary" disabled={!isValid} />
     </form>
   );

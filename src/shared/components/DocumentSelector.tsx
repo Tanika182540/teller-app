@@ -1,4 +1,7 @@
-import { useState } from "react";
+export const DocumentOptions = [
+  { label: "ID Card", value: "id_card" },
+  { label: "Passport", value: "passport" },
+];
 
 const RadioButtonGroup = (props: {
   options: { value: string; label: string }[];
@@ -39,17 +42,17 @@ const RadioButtonGroup = (props: {
   );
 };
 
-const DocumentSelector = () => {
-  const [selectedOption, setSelectedOption] = useState("id_card");
+const DocumentSelector = (props: {
+  selectedOption: string;
+  setSelectedOption: (option: string) => void;
+}) => {
+  const { selectedOption, setSelectedOption } = props;
 
   return (
     <div>
       <h2 className="mb-2">Select Document Type:</h2>
       <RadioButtonGroup
-        options={[
-          { label: "ID Card", value: "id_card" },
-          { label: "Passport", value: "passport" },
-        ]}
+        options={DocumentOptions}
         selected={selectedOption}
         onChange={setSelectedOption}
       />

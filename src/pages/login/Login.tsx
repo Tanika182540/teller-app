@@ -14,7 +14,7 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       localStorage.setItem("user", JSON.stringify(user));
-      login(JSON.stringify(user));
+      login(user);
       successToast("Login Success");
     } catch (error) {
       // TODO: Modal

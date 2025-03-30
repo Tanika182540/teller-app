@@ -27,6 +27,9 @@ const CustomerDetailForm = () => {
     resolver: yupResolver(CustomerVerifyDocumentsSchema),
     mode: "onChange",
     reValidateMode: "onChange",
+    defaultValues: {
+      documentType: "id_card",
+    },
   });
 
   const [step, setStep] = useState(1);

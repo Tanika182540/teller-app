@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   CustomerDetailFormContext,
   ICustomerDetailContext,
 } from "../context/CustomerFormContext";
 import Button from "../../../shared/components/Button";
 import { FormStep } from "../constants/formConstant";
-import { Controller } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import PdfFile from "../../../shared/components/PdfFile";
 import DocumentSelector from "../../../shared/components/DocumentSelector";
+import { uploadPdfFile } from "../../../firebase/firebase.api";
+import { Document } from "./customerDetailForm";
+import { errorToast } from "../../../shared/components/Toast";
 
 export default function Step2CustomerVerifyDocuments() {
   const { customerVerifyDocumentsForm, setStep } =
@@ -17,24 +19,23 @@ export default function Step2CustomerVerifyDocuments() {
   const {
     handleSubmit,
     watch,
-    control,
     setValue,
     formState: { errors, isValid },
   } = customerVerifyDocumentsForm;
-  const documents = watch("documents");
+  const document = watch("document");
+  const documentType = watch("documentType");
+  const shouldUploadFile = !document?.isUpload;
 
   const onSubmit = () => {
     setStep(FormStep.STEP3_DOCUMENT_REVIEW);
   };
 
-  const onDeleteFile = (deleteIndex: number) => {
-    const deletedList = documents?.filter((_, index) => {
-      return index !== deleteIndex;
-    });
-    setValue("documents", deletedList, { shouldValidate: true });
+  const onDeleteFile = () => {
+    setValue("document", undefined, { shouldValidate: true });
   };
 
-  const handleFilePreview = (file: File) => {
+  const handleFilePreview = (file?: File) => {
+    if (!file) return;
     const fileURL = URL.createObjectURL(file);
     window.open(fileURL, "_blank");
   };
@@ -43,12 +44,25 @@ export default function Step2CustomerVerifyDocuments() {
     setStep(FormStep.STEP1_CUSTOMER_DETAIL);
   };
 
-  // useEffect(() => {
-  //   if (documents?.length === 0) return;
-  //   documents?.map((item) => {
-  //     return uploadPdfFile(item);
-  //   });
-  // }, [documents]);
+  const handleFileUpload = async (document?: Document) => {
+    if (!document || !shouldUploadFile) return;
+    try {
+      await uploadPdfFile(document.file);
+
+      const updatedDocument = {
+        ...document,
+        isUpload: true,
+      };
+
+      setValue("document", updatedDocument, { shouldValidate: true });
+    } catch (error) {
+      errorToast("File upload failed:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleFileUpload(document);
+  }, [document]);
 
   return (
     <form
@@ -56,8 +70,13 @@ export default function Step2CustomerVerifyDocuments() {
       className="flex flex-col size-full gap-4"
     >
       <div className="flex flex-col gap-4 size-full">
-        <DocumentSelector />
-        <label className="text-gray-700">Upload PDF Files (Max: 5)</label>
+        <DocumentSelector
+          selectedOption={documentType}
+          setSelectedOption={(option: string) => {
+            setValue("documentType", option, { shouldValidate: true });
+          }}
+        />
+        {/* <label className="text-gray-700">Upload PDF Files (Max: 5)</label> */}
         <label
           htmlFor="documentUpload"
           className="group flex w-fit gap-2 items-center cursor-pointer px-4 py-2 rounded-md border-2 border-blue-500 text-blue-500 
@@ -71,36 +90,30 @@ export default function Step2CustomerVerifyDocuments() {
             Upload
           </span>
         </label>
-        <Controller
-          control={control}
-          name="documents"
-          defaultValue={[]}
-          render={({ field: { onChange, value = [] } }) => (
-            <input
-              type="file"
-              accept="application/pdf"
-              multiple
-              id="documentUpload"
-              hidden
-              onChange={(e) => {
-                const newFiles = Array.from(e.target.files);
-                onChange([...value, ...newFiles]);
-              }}
-            />
-          )}
+        <input
+          type="file"
+          accept="application/pdf"
+          multiple
+          id="documentUpload"
+          hidden
+          onChange={(e) => {
+            const newFiles = e.target.files?.[0];
+            if (!newFiles) return;
+            setValue("document.file", newFiles, { shouldValidate: true });
+          }}
         />
         <div className="flex flex-col gap-4 grow">
-          {documents?.map((file, index) => (
+          {document && (
             <PdfFile
-              key={file.name}
-              fileName={file.name}
-              onClick={() => handleFilePreview(file)}
-              onDeleteFile={() => onDeleteFile(index)}
+              key={document.file.name}
+              fileName={document.file?.name ?? ""}
+              onClick={() => handleFilePreview(document.file)}
+              onDeleteFile={() => onDeleteFile()}
             />
-          ))}
+          )}
         </div>
-        {errors.documents && (
-          <p className="text-red-500 text-xs">{errors.documents.message}</p>
+        {errors.document && (
+          <p className="text-red-500 text-xs">{errors.document.message}</p>
         )}
         <div className="grid grid-cols-2 h-full items-end gap-2">
           <Button title="Back" onClick={onClickBack} type="outline" />
