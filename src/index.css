@@ -7,3 +7,7 @@ html, body, div#__next {
 main {
   @apply h-full w-full flex flex-col; /* Expands to full height */
 }
+
+#root{
+  @apply h-full;
+}
