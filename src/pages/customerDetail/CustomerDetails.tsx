@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "../../shared/components/Modal";
@@ -17,6 +17,8 @@ import {
 } from "./form/customerDetailForm";
 
 const CustomerDetailForm = () => {
+  const [step, setStep] = useState(1);
+
   const customerDetailsForm = useForm({
     resolver: yupResolver(CustomerDetailSchema),
     mode: "onChange",
@@ -31,8 +33,6 @@ const CustomerDetailForm = () => {
       documentType: "id_card",
     },
   });
-
-  const [step, setStep] = useState(1);
 
   const context: ICustomerDetailContext = {
     setStep,

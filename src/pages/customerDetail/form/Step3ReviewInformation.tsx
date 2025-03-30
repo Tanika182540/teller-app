@@ -6,22 +6,23 @@ import {
 import PdfFile from "../../../shared/components/PdfFile";
 import Button from "../../../shared/components/Button";
 import { FormStep } from "../constants/formConstant";
-import { useAuth } from "../../../routes/AuthContext";
-import { onSubmitData } from "../../../firebase/firebase.api";
+import { createCustomer, CustomerData } from "../../../firebase/firebase.api";
 import { DocumentOptions } from "../../../shared/components/DocumentSelector";
+import { useNavigate } from "react-router-dom";
 
 export default function Step3ReviewInformation() {
   const { customerDetailsForm, customerVerifyDocumentsForm, setStep } =
     useContext<ICustomerDetailContext>(CustomerDetailFormContext);
   const { firstName, lastName, idCardNumber, accountNumber } =
     customerDetailsForm.watch();
+  const navigate = useNavigate();
 
-  const { document: document, documentType } = customerVerifyDocumentsForm.watch();
+  const { document: document, documentType } =
+    customerVerifyDocumentsForm.watch();
   const isIdCardDocument = DocumentOptions[0].value === documentType;
   const docType = isIdCardDocument
     ? DocumentOptions[0].label
     : DocumentOptions[1].label;
-  const { user } = useAuth();
 
   const handleFilePreview = (file: File) => {
     const fileURL = URL.createObjectURL(file);
@@ -32,8 +33,19 @@ export default function Step3ReviewInformation() {
     setStep(FormStep.STEP2_VALIDATE_DOCUMENT);
   };
 
-  const onClickSubmit = () => {
-    onSubmitData(user.providerData[0].uid, customerDetailsForm.watch());
+  const goToCustomerDataList = () => {
+    navigate("/");
+  };
+
+  const onClickSubmit = async () => {
+    const data: CustomerData = {
+      detail: customerDetailsForm.watch(),
+      file: customerVerifyDocumentsForm.watch("document.file"),
+      documentType: customerVerifyDocumentsForm.watch("documentType"),
+      submittedAt: ''
+    };
+
+    createCustomer(data, goToCustomerDataList);
   };
 
   return (

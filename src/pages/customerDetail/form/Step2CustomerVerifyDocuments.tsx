@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import PdfFile from "../../../shared/components/PdfFile";
 import DocumentSelector from "../../../shared/components/DocumentSelector";
-import { uploadPdfFile } from "../../../firebase/firebase.api";
+// import { uploadPdfFile } from "../../../firebase/firebase.api";
 import { Document } from "./customerDetailForm";
 import { errorToast } from "../../../shared/components/Toast";
 
@@ -44,25 +44,25 @@ export default function Step2CustomerVerifyDocuments() {
     setStep(FormStep.STEP1_CUSTOMER_DETAIL);
   };
 
-  const handleFileUpload = async (document?: Document) => {
-    if (!document || !shouldUploadFile) return;
-    try {
-      await uploadPdfFile(document.file);
+  // const handleFileUpload = async (document?: Document) => {
+  //   if (!document || !shouldUploadFile) return;
+  //   try {
+  //     await uploadPdfFile(document.file);
 
-      const updatedDocument = {
-        ...document,
-        isUpload: true,
-      };
+  //     const updatedDocument = {
+  //       ...document,
+  //       isUpload: true,
+  //     };
 
-      setValue("document", updatedDocument, { shouldValidate: true });
-    } catch (error) {
-      errorToast("File upload failed:", error);
-    }
-  };
+  //     setValue("document", updatedDocument, { shouldValidate: true });
+  //   } catch (error) {
+  //     errorToast("File upload failed:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    handleFileUpload(document);
-  }, [document]);
+  // useEffect(() => {
+  //   handleFileUpload(document);
+  // }, [document]);
 
   return (
     <form

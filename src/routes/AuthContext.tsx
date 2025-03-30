@@ -44,7 +44,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 // Custom hook to use authentication context
-export const useAuth = () => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuth = (): AuthContextType | undefined => {
   const context = useContext(AuthContext);
   if (!context) {
     errorToast("useAuth must be used within an AuthProvider");

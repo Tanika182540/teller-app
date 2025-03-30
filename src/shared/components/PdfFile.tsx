@@ -5,13 +5,16 @@ export default function PdfFile(props: {
   fileName: string;
   onClick: () => void;
   onDeleteFile?: () => void;
+  iconOnly?: boolean;
 }) {
-  const { fileName, onClick, onDeleteFile } = props;
+  const { fileName, onClick, onDeleteFile, iconOnly } = props;
 
   return (
     <div
       key={fileName}
-      className="p-3 rounded-md border border-[#F40F02] flex flex-row gap-2 items-center cursor-pointer"
+      className={`w-full p-3 h-fit rounded-md border border-[#F40F02] flex flex-row gap-2 items-center cursor-pointer ${
+        iconOnly && "!w-fit"
+      }`}
       onClick={onClick}
     >
       <FontAwesomeIcon icon={faFilePdf} color="#F40F02" />
