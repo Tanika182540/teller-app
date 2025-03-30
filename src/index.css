@@ -1,25 +1,13 @@
 @import "tailwindcss";
 
-html {
-  @apply h-full;
+html, body, div#__next {
+  @apply h-full min-h-screen; /* Ensures the entire viewport height */
 }
-body {
-  @apply h-full;
-}
-div#__next {
-  @apply h-full;
-}
+
 main {
-  @apply h-full;
+  @apply h-full w-full flex flex-col; /* Expands to full height */
 }
 
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+#root{
+  @apply h-full;
 }
