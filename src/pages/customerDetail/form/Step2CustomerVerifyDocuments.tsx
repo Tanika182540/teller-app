@@ -7,12 +7,9 @@ import Button from "../../../shared/components/Button";
 import { FormStep } from "../constants/formConstant";
 import { Controller } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFilePdf,
-  faClose,
-  faUpload,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import PdfFile from "../../../shared/components/PdfFile";
+import DocumentSelector from "../../../shared/components/DocumentSelector";
 
 export default function Step2CustomerVerifyDocuments() {
   const { customerVerifyDocumentsForm, setStep } =
@@ -46,12 +43,20 @@ export default function Step2CustomerVerifyDocuments() {
     setStep(FormStep.STEP1_CUSTOMER_DETAIL);
   };
 
+  // useEffect(() => {
+  //   if (documents?.length === 0) return;
+  //   documents?.map((item) => {
+  //     return uploadPdfFile(item);
+  //   });
+  // }, [documents]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col size-full gap-4"
     >
       <div className="flex flex-col gap-4 size-full">
+        <DocumentSelector />
         <label className="text-gray-700">Upload PDF Files (Max: 5)</label>
         <label
           htmlFor="documentUpload"

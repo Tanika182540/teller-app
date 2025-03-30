@@ -25,7 +25,7 @@ export default function Step1CustomerDetail() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-center space-y-4"
+      className="flex flex-col justify-center space-y-4 size-full"
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Controller
@@ -77,6 +77,7 @@ export default function Step1CustomerDetail() {
           />
         )}
       />
+      <div className="flex grow"/>
       <Button title="Next" type="primary" disabled={!isValid} />
     </form>
   );

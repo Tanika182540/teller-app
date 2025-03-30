@@ -11,7 +11,10 @@ import Step2CustomerVerifyDocuments from "./form/Step2CustomerVerifyDocuments";
 import { FormTitle } from "./constants/formConstant";
 import View from "../../shared/components/View";
 import Step3ReviewInformation from "./form/Step3ReviewInformation";
-import { CustomerDetailSchema, CustomerVerifyDocumentsSchema } from "./form/customerDetailForm";
+import {
+  CustomerDetailSchema,
+  CustomerVerifyDocumentsSchema,
+} from "./form/customerDetailForm";
 
 const CustomerDetailForm = () => {
   const customerDetailsForm = useForm({
@@ -27,21 +30,16 @@ const CustomerDetailForm = () => {
   });
 
   const [step, setStep] = useState(1);
-  const [customerVerifyDocuments, setCustomerVerifyDocuments] = useState<
-    File[]
-  >([]);
 
   const context: ICustomerDetailContext = {
     setStep,
     customerDetailsForm,
     customerVerifyDocumentsForm,
-    customerVerifyDocuments,
-    setCustomerVerifyDocuments,
   };
 
   return (
     <View>
-      <div className="w-full max-w-2xl h-[672px] self-center p-6 bg-white shadow-md rounded-2xl flex flex-col gap-4">
+      <div className="w-full max-w-2xl h-[672px] self-center p-6 bg-white shadow-md rounded-2xl flex flex-col gap-4 overflow-scroll">
         <h2 className="text-2xl font-semibold text-gray-800">
           {FormTitle[step - 1]}
         </h2>
