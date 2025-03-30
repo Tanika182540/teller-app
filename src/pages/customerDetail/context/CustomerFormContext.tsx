@@ -3,7 +3,7 @@ import { UseFormReturn } from "react-hook-form";
 import {
   ICustomerDetail,
   ICustomerVerifyDocuments,
-} from "../form/customerDetailForm";
+} from "../form/CustomerDetailForm";
 
 export interface ICustomerDetailContext {
   setStep: (step: number) => void;

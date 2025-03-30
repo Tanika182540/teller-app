@@ -14,7 +14,7 @@ import Step3ReviewInformation from "./form/Step3ReviewInformation";
 import {
   CustomerDetailSchema,
   CustomerVerifyDocumentsSchema,
-} from "./form/customerDetailForm";
+} from "./form/CustomerDetailForm";
 
 const CustomerDetailForm = () => {
   const [step, setStep] = useState(1);

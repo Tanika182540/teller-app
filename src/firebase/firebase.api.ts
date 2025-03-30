@@ -1,7 +1,7 @@
 import { ref, set, onValue, get } from "firebase/database";
 import { successToast, errorToast } from "../shared/components/Toast";
 import { database } from "./firebase.config";
-import { ICustomerDetail } from "../pages/customerDetail/form/customerDetailForm";
+import { ICustomerDetail } from "../pages/customerDetail/form/CustomerDetailForm";
 import dayjs from "dayjs/esm/index.js";
 
 export type CustomerData = {
