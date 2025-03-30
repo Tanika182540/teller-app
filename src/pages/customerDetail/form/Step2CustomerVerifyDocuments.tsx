@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext } from "react";
 import {
   CustomerDetailFormContext,
   ICustomerDetailContext,
@@ -10,8 +10,6 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import PdfFile from "../../../shared/components/PdfFile";
 import DocumentSelector from "../../../shared/components/DocumentSelector";
 // import { uploadPdfFile } from "../../../firebase/firebase.api";
-import { Document } from "./customerDetailForm";
-import { errorToast } from "../../../shared/components/Toast";
 
 export default function Step2CustomerVerifyDocuments() {
   const { customerVerifyDocumentsForm, setStep } =
@@ -24,7 +22,6 @@ export default function Step2CustomerVerifyDocuments() {
   } = customerVerifyDocumentsForm;
   const document = watch("document");
   const documentType = watch("documentType");
-  const shouldUploadFile = !document?.isUpload;
 
   const onSubmit = () => {
     setStep(FormStep.STEP3_DOCUMENT_REVIEW);

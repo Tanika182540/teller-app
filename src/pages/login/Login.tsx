@@ -16,7 +16,8 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(user));
       login(user);
       successToast("Login Success");
-    } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       // TODO: Modal
       console.error("Error signing in with Google:", error.message);
     }
