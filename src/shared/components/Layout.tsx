@@ -1,12 +1,15 @@
-import React from "react";
-import Header from "./Header";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
+
+const Layout = () => {
   return (
-    <div className="flex flex-col size-full min-h-screen">
-    <Header />
-    <main className="flex-1">{children}</main>
-  </div>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+    </div>
   );
 };
 

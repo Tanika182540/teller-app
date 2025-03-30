@@ -15,9 +15,15 @@ export default function PdfFile(props: {
       onClick={onClick}
     >
       <FontAwesomeIcon icon={faFilePdf} color="#F40F02" />
-      <label className="grow">{fileName}</label>
+      <label className="grow break-words">{fileName}</label>
       {onDeleteFile && (
-        <button className="text-gray-600 text-xl" onClick={onDeleteFile}>
+        <button
+          className="text-gray-600 text-xl"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteFile();
+          }}
+        >
           <FontAwesomeIcon icon={faClose} color="#F40F02" />
         </button>
       )}

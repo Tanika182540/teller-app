@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import classNames from "classnames";
 
 export default function Input(props: {
@@ -8,10 +8,12 @@ export default function Input(props: {
   error?: string;
 }) {
   const { title, value, onChange, error } = props;
+  const inputRef = useRef(null);
 
   return (
     <div className="relative w-full mx-auto">
       <input
+        ref={inputRef}
         id="inputField"
         type="text"
         onChange={(e) => onChange(e.target.value)}
@@ -19,8 +21,10 @@ export default function Input(props: {
       />
       <label
         htmlFor="inputField"
+        onClick={() => inputRef.current?.focus()}
         className={classNames({
-          "absolute left-3 text-lg text-gray-500 transition-all": true,
+          "absolute left-3 text-lg text-gray-500 transition-all cursor-pointer":
+            true,
           "top-0 text-sm text-blue-500": value,
           "top-14 transform -translate-y-10": !value,
         })}
