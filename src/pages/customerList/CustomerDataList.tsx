@@ -70,7 +70,7 @@ export default function CustomerDataList() {
         <Button title="Create Customer Data" onClick={goToCreateCustomerForm} />
       </h2>
       <div className="w-full max-w-4xl h-[672px] p-6 bg-white shadow-md rounded-2xl flex flex-col gap-4 overflow-scroll self-center">
-        {customers ? (
+        {customers && customers?.length > 0 ? (
           customers?.map((customer, index) => {
             return (
               <DataItem

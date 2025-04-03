@@ -9,6 +9,7 @@ type ButtonProps = {
   icon?: React.ReactNode;
   disabled?: boolean;
   fitContent?: boolean;
+  testid?: string;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,6 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   disabled = false,
   fitContent = false,
+  testid,
   ...props
 }) => {
   // Dynamic styles for the button based on type and size
@@ -41,6 +43,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      data-testid={testid}
       onClick={onClick}
       disabled={disabled}
       {...props}

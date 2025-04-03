@@ -18,14 +18,14 @@ export const CustomerDetailSchema = yup.object({
     .string()
     .matches(
       ValidationRules.StringsExceptNumber,
-      "Account number must be exactly 13 digits"
+      "First Name number must be string"
     )
     .required("First name is required"),
   lastName: yup
     .string()
     .matches(
       ValidationRules.StringsExceptNumber,
-      "Account number must be exactly 13 digits"
+      "Last Name number must be string"
     )
     .required("Last name is required"),
   idCardNumber: yup

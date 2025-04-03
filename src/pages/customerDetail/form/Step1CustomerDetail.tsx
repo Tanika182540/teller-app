@@ -33,6 +33,7 @@ export default function Step1CustomerDetail() {
           name="firstName"
           render={({ field: { onChange, value } }) => (
             <Input
+              testid="firstNameInput"
               title="First Name"
               value={value}
               onChange={onChange}
@@ -45,6 +46,7 @@ export default function Step1CustomerDetail() {
           name="lastName"
           render={({ field: { onChange, value } }) => (
             <Input
+              testid="lastNameInput"
               title="Last Name"
               value={value}
               onChange={onChange}
@@ -58,6 +60,7 @@ export default function Step1CustomerDetail() {
         name="idCardNumber"
         render={({ field: { onChange, value } }) => (
           <Input
+            testid="idCardNumberInput"
             title="National Id Number"
             value={value}
             onChange={onChange}
@@ -70,6 +73,7 @@ export default function Step1CustomerDetail() {
         name="accountNumber"
         render={({ field: { onChange, value } }) => (
           <Input
+            testid="accountNumberInput"
             title="Account Number"
             value={value}
             onChange={onChange}
@@ -78,7 +82,12 @@ export default function Step1CustomerDetail() {
         )}
       />
       <div className="flex grow" />
-      <Button title="Next" type="primary" disabled={!isValid} />
+      <Button
+        title="Next"
+        type="primary"
+        disabled={!isValid}
+        testid="button-next"
+      />
     </form>
   );
 }
