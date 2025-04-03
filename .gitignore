@@ -1,3 +1,4 @@
 node_modules
 .vercel
 src/firebase/config.json
+.DS_Store
